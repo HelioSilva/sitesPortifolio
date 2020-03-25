@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>socketIO Chat</title>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="fonts.css">
+    
+    <script>
+
+    var onDigitando = false ;
+
+    $(function(){
+
+        var time = setTimeout(()=>{
+                onDigitando = false;
+           },2000) ;
+        
+
+        $("#m").on("input", function(){
+            
+          clearTimeout(time);
+
+          onDigitando =  true ;
+
+          time = setTimeout(()=>{
+                onDigitando = false;
+           },2000) ;
+            
+
+        });
+
+    });
+
+    </script>
+
+</head>
+<body>
+    <div class="container">
+
+
+        <div id="topo">
+            <div style="width: 200px;"><p>Evento: </p><h5 id="ev">nenhum evento</h5></div>   
+            <div><p>Usuário:</p><h5 id="nick">Nickname</h5></div> 
+        </div>
+
+        <div id="corpo">
+
+            <div id="content">
+                <ul id="messages"></ul>
+            </div> 
+
+
+            <div id="aside">
+                <h4>Usuários Conectados</h4>
+                <ul id="users">
+                    <li id="labelUsers">Conexao X</li>
+                </ul>
+    
+            </div>
+            
+    
+            
+        </div>
+
+        <div id="rodape">
+            <form id="fnickname" class="flexR" action="">
+                <input id="nickname" autocomplete="off" type="text" placeholder="Apelido">
+                <button>Alterar Nickname</button>
+            </form>
+            <form id="fchat" class="flexR" action="">
+        
+                <input id="m" autocomplete="off" type="text" placeholder="Digite aqui sua mensagem">
+                <button>Enviar</button>
+        
+            </form>
+        </div>
+
+    </div>
+
+   
+
+    
+    <script>
+        $(function(){
+            var socket = io() ;
+
+            setInterval(()=>{
+                if (onDigitando == true){
+                    socket.emit('digitando',true);
+                }
+            },500);    
+
+            $('#fchat').submit(function(e){
+                e.preventDefault();
+                socket.emit('chat message',$('#m').val());
+                $('#m').val('');
+
+                onDigitando = false ;
+                socket.emit('digitando',false);
+                return false ;
+            });
+
+            $('#fnickname').submit(function(e){
+                e.preventDefault();
+                socket.emit('nickname',$('#nickname').val());
+                $('#nickname').val('');
+                return false ;
+            });
+
+
+            // Eventos com sockets
+            socket.on('chat message', function(msg){
+                $('#messages').append($('<li>').text(msg));
+                    $("#content").scrollTop($("#content")[0].scrollHeight);
+            });
+
+            // socket.on('nick', function(value){
+            //     $('#nick').html(value);
+            // });
+
+            socket.on('digitando', function(msg){
+                $('#ev').html(msg);
+            });
+
+            socket.on('users',function(obj){
+                $('#users').html('');
+                obj.forEach(value => {
+                    $('#users').append($('<li>').text(value.nickname));
+                });
+            });
+
+        });
+
+    </script>
+</body>
+</html>

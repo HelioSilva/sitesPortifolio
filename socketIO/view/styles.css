@@ -1,0 +1,79 @@
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font: 13px Helvetica, Arial; }
+form {  padding: 3px }
+form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+form button { background: rgb(130, 224, 255); width: 150px; border: none; padding: 10px; }
+#messages { list-style-type: none; margin: 0; padding: 0; }
+#messages li { padding: 5px 10px; }
+#messages li:nth-child(odd) { background: #eee; }
+
+
+ul{
+    list-style-type: none;
+}
+li{
+    font-weight: bold;
+    padding: 7px;
+}
+
+.flexRow {
+    display: flex ;
+    flex-direction: column ;
+}
+
+.flexR{
+    display: flex;
+    flex-direction: row;
+}
+
+#fnickname{
+    flex-grow: 2;
+}
+
+#fchat{
+    flex-grow: 10;    
+}
+
+.container{
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    width: 100vw ;
+    height: 100vh ;
+
+}
+
+#topo{
+    flex-basis: 40px;
+    min-height: 40px;
+
+    display: flex;
+
+    background-color: darkorange;
+}
+
+#corpo{
+    flex-grow: 10;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+
+}
+
+#aside{
+    flex-grow: 2;
+}
+
+#content{
+    flex-grow: 10;
+    overflow: scroll;
+}
+
+#rodape{
+    background-color: darkolivegreen;
+    flex-basis: 40px;
+    display: flex;
+}
